@@ -2,6 +2,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: django-deployment
+  labels:
+    app: django-app
 spec:
   replicas: 1
   selector:
@@ -25,10 +27,8 @@ spec:
           value: "0000"
         - name: POSTGRES_DB
           value: "postgres"
-        - name: DATABASE_NAME
-          value: "postgres"
         - name: DATABASE_URL
-          value: psql://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@postgres:5432/$(POSTGRES_DB)
+          value: psql://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@db:5432/$(POSTGRES_DB)
         volumeMounts:
           - name: static-files
             mountPath: /staticfiles
@@ -39,7 +39,6 @@ spec:
 
 
 ---
-# START Service
 apiVersion: v1
 kind: Service
 metadata:
@@ -53,4 +52,3 @@ spec:
       targetPort: 8000
   selector:
     app: django-app
-# END SERVICE
