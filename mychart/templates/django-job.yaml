@@ -1,0 +1,29 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: django-migrate
+spec:
+  template:
+    spec:
+      containers:
+        - name: django-migrate
+          image: woodstock93/api_server:1
+          command: ["/bin/sh", "-c"]
+          args:
+            - |
+              python manage.py makemigrations &&
+              python manage.py migrate &&
+              python manage.py makemigrations dev &&
+              python manage.py migrate
+          env:
+            - name: POSTGRES_USER
+              value: "postgres"
+            - name: POSTGRES_PASSWORD
+              value: "0000"
+            - name: POSTGRES_DB
+              value: "postgres"
+            - name: DATABASE_URL
+              value: psql://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@db:5432/$(POSTGRES_DB)
+
+      restartPolicy: Never
+  backoffLimit: 3
