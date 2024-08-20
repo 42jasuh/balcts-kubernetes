@@ -26,11 +26,11 @@
    - woodstock93/api_server:1
 
 ## 실행 순서
-kubectl apply -f postgres-storage.yaml
-kubectl apply -f postgres-deployment.yaml
-kubectl apply -f django-storage.yaml
-kubectl apply -f django-deployment.yaml
-kubectl apply -f django-job.yaml
+- kubectl apply -f postgres-storage.yaml
+- kubectl apply -f postgres-deployment.yaml
+- kubectl apply -f django-storage.yaml
+- kubectl apply -f django-deployment.yaml
+- kubectl apply -f django-job.yaml
 kubectl apply -f django-ingress.yaml
 
 
