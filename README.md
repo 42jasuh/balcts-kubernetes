@@ -3,7 +3,6 @@
 `balcts-kubernetes`는 Kubernetes 환경에서 `balcts` 애플리케이션을 배포하기 위한 *.yaml 파일 모음집입니다. 이 프로젝트를 로컬에서 실행하기 사용한 모든 소프트웨어, 그리고 아키텍처 구성에 대해 작성하였습니다.
 
 ## 아키텍처 구성도
-[url](http://35.193.102.56/post/)
   
 ![image](https://github.com/user-attachments/assets/c0d978c5-aae9-4ef1-a1c8-4181fea600fd)
 
