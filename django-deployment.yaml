@@ -52,6 +52,7 @@ metadata:
   name: django-service
   labels:
     app: django-service
+    project: k8s
 spec:
   type: NodePort
   ports:
@@ -59,3 +60,47 @@ spec:
       targetPort: 8000
   selector:
     app: django-app
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: django-ingress
+  labels:
+    project: k8s
+spec:
+  defaultBackend:
+    service:
+      name: django-service
+      port:
+        number: 80
+
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: django-migrate
+  labels:
+    project: k8s
+spec:
+  template:
+    spec:
+      containers:
+        - name: django-migrate
+          image: woodstock93/api_server:1
+          command: ["/bin/sh", "-c"]
+          args:
+            - |
+              python manage.py makemigrations &&
+              python manage.py migrate &&
+              python manage.py makemigrations dev &&
+              until python manage.py migrate; do echo "Retrying migrate..."; sleep 3; done &&
+              yes | python manage.py collectstatic
+          envFrom:
+            - configMapRef:
+                name: my-config              
+          env:
+            - name: DATABASE_URL
+              value: psql://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@$(APP_SERVICE_NAME):5432/$(POSTGRES_DB)
+      restartPolicy: Never
+  backoffLimit: 5

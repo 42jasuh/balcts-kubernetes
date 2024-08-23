@@ -9,3 +9,4 @@ data:
   POSTGRES_PASSWORD: "0000"
   POSTGRES_DB: "postgres"
   APP_SERVICE_NAME: "db"
+  DB_PORT: "5432"
