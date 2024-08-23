@@ -32,11 +32,19 @@ spec:
         volumeMounts:
           - name: static-files
             mountPath: /staticfiles
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8000
+          initialDelaySeconds: 3
+          periodSeconds: 1
+          successThreshold: 1
+          failureThreshold: 5
+          timeoutSeconds: 3            
       volumes:
         - name: static-files
           persistentVolumeClaim:
             claimName: django-static-pvc
-
 
 ---
 apiVersion: v1
@@ -46,7 +54,7 @@ metadata:
   labels:
     app: django-service
 spec:
-  type: LoadBalancer
+  type: NodePort
   ports:
     - port: 80
       targetPort: 8000
