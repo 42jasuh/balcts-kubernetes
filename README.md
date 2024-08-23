@@ -42,6 +42,5 @@
     kubectl apply -f postgres-deployment.yaml
     kubectl apply -f django-storage.yaml
     kubectl apply -f django-deployment.yaml
-    kubectl apply -f django-job.yaml
-    kubectl apply -f django-ingress.yaml
+    kubectl apply -f config.yaml
     ```
