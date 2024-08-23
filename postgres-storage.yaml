@@ -4,6 +4,7 @@ metadata:
   name: postgres-pv
   labels:
     type: local
+    project: k8s
 spec:
   storageClassName: manual
   capacity:
@@ -18,6 +19,7 @@ kind: PersistentVolumeClaim
 metadata:
   labels:
     app: postgres
+    project: k8s
   name: postgres-pv-claim
 spec:
   storageClassName: manual

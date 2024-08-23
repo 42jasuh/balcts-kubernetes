@@ -4,6 +4,7 @@ metadata:
   name: postgres-deploy
   labels:
     name: postgres-deploy
+    project: k8s
 spec:
   replicas: 1
   selector:
@@ -43,6 +44,7 @@ metadata:
   name: db
   labels:
     app: postgres-service
+    project: k8s
 spec:
   type: ClusterIP
   ports:

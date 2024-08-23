@@ -2,6 +2,8 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: django-migrate
+  labels:
+    project: k8s
 spec:
   template:
     spec:
@@ -16,16 +18,13 @@ spec:
               python manage.py makemigrations dev &&
               python manage.py migrate
               yes | python manage.py collectstatic
+          envFrom:
+            - configMapRef:
+                name: my-config              
           env:
-            - name: POSTGRES_USER
-              value: "postgres"
-            - name: POSTGRES_PASSWORD
-              value: "0000"
-            - name: POSTGRES_DB
-              value: "postgres"
             - name: DATABASE_URL
-              value: psql://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@db:5432/$(POSTGRES_DB)
+              value: psql://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@$(APP_SERVICE_NAME):5432/$(POSTGRES_DB)
 
 
       restartPolicy: Never
-  backoffLimit: 3
+  backoffLimit: 5

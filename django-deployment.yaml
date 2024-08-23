@@ -4,6 +4,7 @@ metadata:
   name: django-deployment
   labels:
     app: django-app
+    project: k8s
 spec:
   replicas: 1
   selector:
@@ -13,6 +14,7 @@ spec:
     metadata:
       labels:
         app: django-app
+        project: k8s
     spec:
       containers:
       - name: django-app
@@ -20,15 +22,12 @@ spec:
         imagePullPolicy: Always
         ports:
         - containerPort: 8000
+        envFrom:
+          - configMapRef:
+              name: my-config
         env:
-        - name: POSTGRES_USER
-          value: "postgres"
-        - name: POSTGRES_PASSWORD
-          value: "0000"
-        - name: POSTGRES_DB
-          value: "postgres"
         - name: DATABASE_URL
-          value: psql://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@db:5432/$(POSTGRES_DB)
+          value: psql://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@$(APP_SERVICE_NAME):5432/$(POSTGRES_DB)
         volumeMounts:
           - name: static-files
             mountPath: /staticfiles
@@ -40,7 +39,7 @@ spec:
           periodSeconds: 1
           successThreshold: 1
           failureThreshold: 3
-          timeoutSeconds: 1            
+          timeoutSeconds: 1
       volumes:
         - name: static-files
           persistentVolumeClaim:
