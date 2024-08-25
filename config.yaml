@@ -5,8 +5,11 @@ metadata:
   labels:
     project: k8s
 data:
+  POSTGRES_DB: "postgres"
   POSTGRES_USER: "postgres"
   POSTGRES_PASSWORD: "0000"
-  POSTGRES_DB: "postgres"
+
   APP_SERVICE_NAME: "db"
+  
+  DB_SERVICE_PORT: "5432"
   DB_PORT: "5432"
