@@ -27,7 +27,7 @@ spec:
               name: my-config
         env:
         - name: DATABASE_URL
-          value: psql://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@$(APP_SERVICE_NAME):5432/$(POSTGRES_DB)
+          value: psql://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@$(APP_SERVICE_NAME):$(DB_SERVICE_PORT)/$(POSTGRES_DB)
         volumeMounts:
           - name: static-files
             mountPath: /staticfiles
